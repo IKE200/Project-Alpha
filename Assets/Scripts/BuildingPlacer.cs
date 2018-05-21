@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BuildingPlacer : MonoBehaviour {
 
-    public static bool buildingPlacerActive = true;
+    public static bool buildingPlacerActive = false;
 
     public GameObject testBuilding;
     public KeyCode place = KeyCode.Mouse0;
@@ -40,10 +40,21 @@ public class BuildingPlacer : MonoBehaviour {
             }
             else if (Input.GetKeyUp(stop))
             {
-                buildingPlacerActive = false;
-                Destroy(trackingObject);
+                Deactivate();
 
             }
         }
 	}
+
+    public void Activate(GameObject objToPlace)
+    {
+        buildingPlacerActive = true;
+        trackingObject = Instantiate(objToPlace, transform);
+    }
+
+    private void Deactivate()
+    {
+        buildingPlacerActive = false;
+        Destroy(trackingObject);
+    }
 }
