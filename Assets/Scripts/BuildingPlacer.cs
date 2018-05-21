@@ -34,11 +34,11 @@ public class BuildingPlacer : MonoBehaviour {
                 trackingObject.transform.position = hit.point;
                 //hit.collider.gameObject.GetComponent<TerrainData>().GetSteepness(hit.point);
             }
-            if (Input.GetKeyUp(place))
+            if (Input.GetKeyDown(place))
             {
                 GameObject newObject = Instantiate(trackingObject, trackingObject.transform.position, trackingObject.transform.rotation);
             }
-            else if (Input.GetKeyUp(stop))
+            else if (Input.GetKeyDown(stop))
             {
                 Deactivate();
 
