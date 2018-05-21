@@ -11,9 +11,11 @@ public class BuildingPlacer : MonoBehaviour {
     public KeyCode stop = KeyCode.Mouse1;
 
     private GameObject trackingObject;
+    private Terrain terrain;
 
 	// Use this for initialization
 	void Start () {
+        terrain = FindObjectOfType<Terrain>();
         if (buildingPlacerActive)
         {
             trackingObject = Instantiate(testBuilding, transform);
@@ -30,6 +32,7 @@ public class BuildingPlacer : MonoBehaviour {
             if (hit.collider is TerrainCollider)
             {
                 trackingObject.transform.position = hit.point;
+                //hit.collider.gameObject.GetComponent<TerrainData>().GetSteepness(hit.point);
             }
             if (Input.GetKeyUp(place))
             {
@@ -39,6 +42,7 @@ public class BuildingPlacer : MonoBehaviour {
             {
                 buildingPlacerActive = false;
                 Destroy(trackingObject);
+
             }
         }
 	}
