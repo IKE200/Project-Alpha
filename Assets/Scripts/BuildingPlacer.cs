@@ -4,12 +4,11 @@ using UnityEngine;
 
 public class BuildingPlacer : MonoBehaviour {
 
-    public static bool buildingPlacerActive = false;
-
-    public GameObject testBuilding;
+        public GameObject testBuilding;
     public KeyCode place = KeyCode.Mouse0;
     public KeyCode stop = KeyCode.Mouse1;
 
+    private bool buildingPlacerActive = false;
     private GameObject trackingObject;
     private Terrain terrain;
 
@@ -29,7 +28,8 @@ public class BuildingPlacer : MonoBehaviour {
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             Physics.Raycast(ray, out hit);
-            if (hit.collider is TerrainCollider)
+            bool hitTerrain = hit.collider is TerrainCollider;
+            if (hitTerrain)
             {
                 trackingObject.transform.position = hit.point;
                 //hit.collider.gameObject.GetComponent<TerrainData>().GetSteepness(hit.point);
@@ -52,7 +52,7 @@ public class BuildingPlacer : MonoBehaviour {
         trackingObject = Instantiate(objToPlace, transform);
     }
 
-    private void Deactivate()
+    public void Deactivate()
     {
         buildingPlacerActive = false;
         Destroy(trackingObject);
