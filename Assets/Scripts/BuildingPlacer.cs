@@ -36,7 +36,7 @@ public class BuildingPlacer : MonoBehaviour {
             }
             if (Input.GetKeyUp(place))
             {
-                GameObject newObject = Instantiate(testBuilding, trackingObject.transform.position, trackingObject.transform.rotation);
+                GameObject newObject = Instantiate(trackingObject, trackingObject.transform.position, trackingObject.transform.rotation);
             }
             else if (Input.GetKeyUp(stop))
             {
