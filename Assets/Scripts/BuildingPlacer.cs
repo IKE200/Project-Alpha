@@ -5,9 +5,10 @@ using UnityEngine.EventSystems;
 
 public class BuildingPlacer : MonoBehaviour {
 
-        public GameObject testBuilding;
+    public GameObject testBuilding;
     public KeyCode place = KeyCode.Mouse0;
     public KeyCode stop = KeyCode.Mouse1;
+    public float maxSteepness = 15;
 
     private bool buildingPlacerActive = false;
     private GameObject trackingObject;
@@ -15,7 +16,6 @@ public class BuildingPlacer : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        terrain = FindObjectOfType<Terrain>();
         if (buildingPlacerActive)
         {
             trackingObject = Instantiate(testBuilding, transform);
@@ -24,7 +24,6 @@ public class BuildingPlacer : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        print(!EventSystem.current.IsPointerOverGameObject());
         if (buildingPlacerActive)
         {
             RaycastHit hit;
@@ -33,8 +32,12 @@ public class BuildingPlacer : MonoBehaviour {
             bool hitTerrain = hit.collider is TerrainCollider;
             if (hitTerrain)
             {
-                trackingObject.transform.position = hit.point;
-                //hit.collider.gameObject.GetComponent<TerrainData>().GetSteepness(hit.point);
+                terrain = hit.collider.GetComponent<Terrain>();
+                float steepness = terrain.terrainData.GetSteepness((hit.point.x - terrain.transform.position.x) / terrain.terrainData.heightmapWidth, (hit.point.z - terrain.transform.position.z) / terrain.terrainData.heightmapHeight);
+                if (steepness <= maxSteepness)
+                {
+                    trackingObject.transform.position = hit.point;
+                }
             }
             if (Input.GetKeyDown(place) && !EventSystem.current.IsPointerOverGameObject())
             {
