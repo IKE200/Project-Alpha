@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class BuildingPlacer : MonoBehaviour {
 
@@ -23,6 +24,7 @@ public class BuildingPlacer : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        print(!EventSystem.current.IsPointerOverGameObject());
         if (buildingPlacerActive)
         {
             RaycastHit hit;
@@ -34,7 +36,7 @@ public class BuildingPlacer : MonoBehaviour {
                 trackingObject.transform.position = hit.point;
                 //hit.collider.gameObject.GetComponent<TerrainData>().GetSteepness(hit.point);
             }
-            if (Input.GetKeyDown(place))
+            if (Input.GetKeyDown(place) && !EventSystem.current.IsPointerOverGameObject())
             {
                 GameObject newObject = Instantiate(trackingObject, trackingObject.transform.position, trackingObject.transform.rotation);
             }
@@ -48,6 +50,7 @@ public class BuildingPlacer : MonoBehaviour {
 
     public void Activate(GameObject objToPlace)
     {
+        if (trackingObject) { Destroy(trackingObject); }
         buildingPlacerActive = true;
         trackingObject = Instantiate(objToPlace, transform);
     }
