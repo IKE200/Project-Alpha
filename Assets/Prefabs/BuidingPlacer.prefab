@@ -20,6 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4769295614339160}
   - component: {fileID: 114030702835466368}
+  - component: {fileID: 114489594324813744}
   m_Layer: 0
   m_Name: BuidingPlacer
   m_TagString: Untagged
@@ -51,6 +52,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 373584af1e0bf244db6765f8d666c8dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  testBuilding: {fileID: 100000, guid: 8e026a7a9d6c3bc4ab98d0fcf0b8e9b5, type: 3}
   place: 323
   stop: 324
+  maxSteepness: 15
+  redMat: {fileID: 2100000, guid: c3d64e8e629755c498bcfd18c21c8883, type: 2}
+  greenMat: {fileID: 2100000, guid: 5a4d3f11d8f842f44875ba074e610766, type: 2}
+--- !u!114 &114489594324813744
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1205633499446822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1862395651, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates: []
+  delegates: []
