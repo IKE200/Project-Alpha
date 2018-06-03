@@ -5,21 +5,20 @@ using UnityEngine.EventSystems;
 
 public class BuildingPlacer : MonoBehaviour {
 
-    public GameObject testBuilding;
-    public KeyCode place = KeyCode.Mouse0;
-    public KeyCode stop = KeyCode.Mouse1;
     public float maxSteepness = 15;
+    public float rotationSteps = 90;
+    public Material redMat;
+    public Material greenMat;
 
     private bool buildingPlacerActive = false;
     private GameObject trackingObject;
+    private GameObject placingObject;
     private Terrain terrain;
+    private MeshRenderer[] meshes;
+    private Material matColor;
 
-	// Use this for initialization
-	void Start () {
-        if (buildingPlacerActive)
-        {
-            trackingObject = Instantiate(testBuilding, transform);
-        }
+    // Use this for initialization
+    void Start () {
 	}
 	
 	// Update is called once per frame
@@ -29,21 +28,39 @@ public class BuildingPlacer : MonoBehaviour {
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             Physics.Raycast(ray, out hit);
-            bool hitTerrain = hit.collider is TerrainCollider;
-            if (hitTerrain)
+            bool hitCorr = hit.collider is TerrainCollider;
+            if (hitCorr)
             {
+                trackingObject.transform.position = hit.point;
                 terrain = hit.collider.GetComponent<Terrain>();
                 float steepness = terrain.terrainData.GetSteepness((hit.point.x - terrain.transform.position.x) / terrain.terrainData.heightmapWidth, (hit.point.z - terrain.transform.position.z) / terrain.terrainData.heightmapHeight);
                 if (steepness <= maxSteepness)
                 {
-                    trackingObject.transform.position = hit.point;
+                    matColor = greenMat;
+                }
+                else
+                {
+                    hitCorr = false;
+                    matColor = redMat;
                 }
             }
-            if (Input.GetKeyDown(place) && !EventSystem.current.IsPointerOverGameObject())
+            else
             {
-                GameObject newObject = Instantiate(trackingObject, trackingObject.transform.position, trackingObject.transform.rotation);
+                matColor = redMat;
             }
-            else if (Input.GetKeyDown(stop))
+            foreach (MeshRenderer mesh in meshes)
+            {
+                mesh.material = matColor;
+            }
+            if (Input.GetButtonDown("Select") && !EventSystem.current.IsPointerOverGameObject() && hitCorr)
+            {
+                GameObject newObject = Instantiate(placingObject, trackingObject.transform.position, trackingObject.transform.rotation);
+            }
+            else if (Input.GetButtonDown("Rotate"))
+            {
+                trackingObject.transform.Rotate(Vector3.up * rotationSteps);
+            }
+            else if (Input.GetButtonDown("Deselect"))
             {
                 Deactivate();
 
@@ -55,7 +72,9 @@ public class BuildingPlacer : MonoBehaviour {
     {
         if (trackingObject) { Destroy(trackingObject); }
         buildingPlacerActive = true;
+        placingObject = objToPlace;
         trackingObject = Instantiate(objToPlace, transform);
+        meshes = trackingObject.GetComponentsInChildren<MeshRenderer>();
     }
 
     public void Deactivate()
